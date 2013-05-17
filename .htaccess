@@ -1,0 +1,18 @@
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteCond $1 !^(index\.php|assets|robots\.txt|css|js)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1 [L]
+# direct image requests to temp
+RewriteCond %{QUERY_STRING} full=(.*)&?
+RewriteRule (.*)rwd-router/.*\.(jpe?g|png|gif|webp) $1%1 [L]
+# ignore trap for non-image requests, rewrite URL without trap segment
+RewriteRule (.*)rwd-router/(.*)$ $1$2
+# //End Responsive Images
+</IfModule>
+# BEGIN GZIP
+<ifmodule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/text text/json text/html text/plain text/xml text/css application/x-javascript application/javascript
+</ifmodule>
+# END GZIP
