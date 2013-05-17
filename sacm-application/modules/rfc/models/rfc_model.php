@@ -5,6 +5,7 @@ class Rfc_model extends CI_Model
     {
         parent::__construct();
     }
+    //menampilkan tabel rfc 
     function setJson($rows, $offset, $sort, $order, $stat)
     {
         $this->db->where('RFCId', '');
@@ -12,17 +13,18 @@ class Rfc_model extends CI_Model
         $this->db->order_by($sort, $order);
         $this->db->limit($rows, $offset);
         $jsonevents = array();
-        $jsonevents['rows'] = $this->db->get('rfc')->result();
+        $jsonevents['rows']  = $this->db->get('rfc')->result();
         $jsonevents['total'] = $this->db->get('rfc')->num_rows();
         return json_encode($jsonevents);
     }
+    
     function setDetilJson($rows, $offset, $sort, $order, $noRFC)
     {
         $this->db->where('NomorRFC', $noRFC);
         $this->db->order_by($sort, $order);
         $this->db->limit($rows, $offset);
         $jsonevents = array();
-        $jsonevents['rows'] = $this->db->get('rfc_konfigurasi')->result();
+        $jsonevents['rows']  = $this->db->get('rfc_konfigurasi')->result();
         $jsonevents['total'] = $this->db->get('rfc_konfigurasi')->num_rows();
         return json_encode($jsonevents);
     }
