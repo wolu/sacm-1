@@ -36,8 +36,8 @@
         resizable="true"
         style="width:250px;height:300px; padding:10px;">
           <form id="fmteknisi" method="post">
-          <label>Serial Number</label>
-          <input type="text" id="sn" name="SerialNumber" /><br />
+          <label>No RFC</label>
+          <input type="text" id="sn" name="NomorRFC" /><br />
           <label>NIK</label>
           <input type="text" id="nik" name="NIK" onclick="javascript:openNIK()" /><br/>
           <label>Jabatan</label>
@@ -45,14 +45,15 @@
           </form>  
     </div>
     <div id="btn-teknisi">
-    <a href="javascript:void(0)" onclick="javascript:saveTeknisi()" class="btn btn-small btn-info">
+    <a href="javascript:void(0)" onclick="javascript:saveAssignTeknisi()" class="btn btn-small btn-info">
     <i class="icon-bookmark icon-large"></i>&nbsp;Save</a>
-    <a href="javascript:void(0)" onclick="javascript:" class="btn btn-small btn-danger">
+    <a href="javascript:void(0)" onclick="javascript:$('#dlgteknisi').dialog('close')" class="btn btn-small btn-danger">
     <i class="icon-remove-sign icon-large"></i>&nbsp;Close</a>
     </div>
 <!---------------------------------------------------------------------------------------->   
 <!---------------------------------------------------------------------------------------->
 <script type="text/javascript">
+var url;
 function updateSatusRfc(){
     	var row = $('#dgrfc').datagrid('getSelected');
     	if (row.NIK != null){
@@ -77,18 +78,42 @@ function updateSatusRfc(){
     	   $.messager.alert('Info','Pilih Teknisi Belum dilakukan', 'info'); 
     	}
     }
-    function updateAssignTeknisi()
+function updateAssignTeknisi()
     {
       var row = $('#dgrfc').datagrid('getSelected');
     	if (row.NIK == null){
     	   	$('#dlgteknisi').dialog('open').dialog('setTitle', 'Assign Teknisi');
+            $('#fmteknisi').form('clear');
     		$('#fmteknisi').form('load', row);
+            url='<?=base_url('release/addTeknisi')?>';
            }else{
             $('#dlgteknisi').dialog('open').dialog('setTitle', 'Assign Teknisi');
     		$('#fmteknisi').form('load', row);
+            url='<?=base_url('release/updateTeknisi')?>';
            }
     }
-    $('#dgrfc').datagrid({  
+function saveAssignTeknisi()
+    {
+      $('#fmteknisi').form('submit',{
+    		url: url,
+    		onSubmit: function(){
+    			return $(this).form('validate');
+    		},
+    		success: function(result) {
+    			var result = eval('(' + result + ')');
+    			if (result.success) {
+    				$('#dlgteknisi').dialog('close');
+    				    $.messager.alert('Berhasil',result.success, 'info');
+    				$('#dgrfc').datagrid({
+    					url: '<?= base_url('release/getJsonRfc?status=OC') ?>'
+    				}, 'reload');
+    			} else {
+    			 $.messager.alert('Error',result.msg, 'error');
+    			}
+    		}
+    	});  
+    }
+$('#dgrfc').datagrid({  
     view: detailview,  
     detailFormatter:function(index,row){  
         return '<div style="padding:2px"><table id="ddvoc-' + index + '" style="width:600px" ></table></div>';  
@@ -118,7 +143,7 @@ function updateSatusRfc(){
             $('#dgrfc').datagrid('fixDetailRowHeight',index);  
         }  
     });
-    function openNIK(){
+function openNIK(){
                 $('#nik').combogrid({  
                 panelWidth:600,  
                 url:'<?=base_url('master/teknisi/getJson')?>',  
