@@ -44,6 +44,12 @@
           <input type="text" name="Jabatan" /><br />
           </form>  
     </div>
+    <div id="btn-teknisi">
+    <a href="javascript:void(0)" onclick="javascript:saveTeknisi()" class="btn btn-small btn-info">
+    <i class="icon-bookmark icon-large"></i>&nbsp;Save</a>
+    <a href="javascript:void(0)" onclick="javascript:" class="btn btn-small btn-danger">
+    <i class="icon-remove-sign icon-large"></i>&nbsp;Close</a>
+    </div>
 <!---------------------------------------------------------------------------------------->   
 <!---------------------------------------------------------------------------------------->
 <script type="text/javascript">
@@ -116,14 +122,13 @@ function updateSatusRfc(){
                 $('#nik').combogrid({  
                 panelWidth:600,  
                 url:'<?=base_url('master/teknisi/getJson')?>',  
-                idField:'NamaKonfigDetil',  
-                textField:'NamaKonfigDetil',  
+                idField:'NIK',  
+                textField:'NamaTeknisi',  
                 mode:'local',  
                 fitColumns:true,  
                 columns:[[  
-                    {field:'KodeKonfig',title:'Kode', align:'center', width:10},  
-                    {field:'NamaKonfigDetil',title:'Nama',align:'left',width:50},
-                    {field:'Deskripsi',title:'Deskripsi',align:'left',width:40}
+                    {field:'NIK',title:'N I K', align:'center', width:20},  
+                    {field:'NamaTeknisi',title:'Nama Karyawan',align:'left',width:50}
                 ]]  
             });  
             }
