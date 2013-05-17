@@ -60,7 +60,7 @@ $('#master').attr('selected', true);
     		url = "<?php echo base_url('master/costcenter/update'); ?>";
     	}
     }
-    function saveCC() {
+    function saveCC(){
     	$('#fm').form('submit',{
     		url: url,
     		onSubmit: function(){
