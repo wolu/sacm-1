@@ -7,7 +7,7 @@ class Release_model extends CI_Model
     }
     function setJsonRfc($rows, $offset, $sort, $order, $stat)
     {
-        $this->db->join('teknisi_pelaksana', 'teknisi_pelaksana.NomorDokumen = rfc.NomorService','left');
+        $this->db->join('teknisi_pelaksana', 'teknisi_pelaksana.NomorDokumen = rfc.NomorRFC','left');
         $this->db->where('RFCId !=', '');
         $this->db->where('TanggalTarget !=', '0000-00-00 00:00:00');
         $this->db->where('KodeStatus', $stat);
@@ -69,24 +69,42 @@ class Release_model extends CI_Model
         $jsonevents['total'] = $this->db->get('request_konfigurasi')->num_rows();
         return json_encode($jsonevents);
     }
-    
+    function insertTeknisi($data)
+    {
+        $result = $this->db->insert('teknisi_pelaksana', $data);
+        if ($result) {
+            return json_encode(array('success' => 'Data Berhasil di Tambahkan'));
+        } else {
+            return json_encode(array('msg' => $this->db->_error_message()));
+        }
+    }
+    function updateTeknisi($id, $data)
+    {
+        $this->db->where('NomorDokumen', $id);
+        $result = $this->db->update('teknisi_pelaksana', $data);
+        if ($result){
+            return json_encode(array('success' => 'Data Berhasil diupdate'));
+        }else{
+            return json_encode(array('msg' => $this->db->_error_message()));
+        }
+    }
     function updateStatusReq($id, $data)
     {
         $this->db->where('NomorRequest', $id);
         $rfc = array(
             'NomorRequest' => $id,
-            'KodeStatus' => $data['KodeStatus'],
-            'Tanggal' => date('Y-m-d H:i:s')
+            'KodeStatus'   => $data['KodeStatus'],
+            'Tanggal'      => date('Y-m-d H:i:s')
             );
-
+            
         $this->db->trans_begin();
         $this->db->update('request', $data);
         $this->db->insert('status_request', $rfc);
 
-        if ($this->db->trans_status() === false) {
+        if ($this->db->trans_status() === false){
             $this->db->trans_rollback();
             return json_encode(array('msg' => 'Terjadi Beberapa Kesalahan'));
-        } else {
+        }else{
             $this->db->trans_commit();
             return json_encode(array('success' => 'Data Berhasil Ditambahkan'));
         }
