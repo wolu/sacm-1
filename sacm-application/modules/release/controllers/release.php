@@ -89,6 +89,29 @@ class Release extends CI_Controller
         $this->release_model->setDetilJsonReq($rows, $offset, $sort,$order, $noReq)
         );
     }
+    function addTeknisi()
+    {
+        $data = array(
+        'NomorDokumen' =>$this->input->post('NomorRFC'),
+        'NIK' =>$this->input->post('NIK'),
+        'Jabatan'=> $this->input->post('Jabatan')
+        );
+        
+        $this->output->set_output(
+        $this->release_model->insertTeknisi($data)
+        );
+    }
+    function updateTeknisi()
+    {
+        $id =$this->input->post('NomorRFC');
+        $data = array(
+        'NIK' =>$this->input->post('NIK'),
+        'Jabatan'=> $this->input->post('Jabatan')
+        );
+        $this->output->set_output(
+        $this->release_model->updateTeknisi($id , $data)
+        );
+    }
     function updateStatusRfc()
     {
         $id = $this->input->post('id');
