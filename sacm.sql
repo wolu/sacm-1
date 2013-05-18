@@ -2,7 +2,8 @@
 SQLyog Ultimate v8.82 
 MySQL - 5.5.27 : Database - coba
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -14,7 +15,7 @@ MySQL - 5.5.27 : Database - coba
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 CREATE DATABASE /*!32312 IF NOT EXISTS*/`coba` /*!40100 DEFAULT CHARACTER SET latin1 */;
 
-USE `coba`;
+USE `sacm`;
 
 /*Table structure for table `asset` */
 
